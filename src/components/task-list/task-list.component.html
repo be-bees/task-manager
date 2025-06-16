@@ -1,0 +1,35 @@
+<div class="task-list-container">
+    <h2>Your Tasks</h2>
+  
+    <div class="add-task">
+      <input
+        type="text"
+        placeholder="New task title"
+        [(ngModel)]="newTaskTitle"
+        (keyup.enter)="addTask()"
+      >
+      <button (click)="addTask()">Add Task</button>
+    </div>
+  
+    <ul *ngIf="(tasks$ | async) as tasks; else noTasksMessage">
+      <li *ngFor="let task of tasks; index as i; first as isFirst; last as isLast; odd as isOdd; even as isEven"
+      [ngClass]="{'completed': task.completed}"
+          [class.odd-row]="isOdd"
+          [class.even-row]="isEven"
+          [ngStyle]="{'opacity': task.completed ? 0.6 : 1}" 
+          appHighlightOnHover="lightblue">
+        <input
+          type="checkbox"
+          [checked]="task.completed"
+          (change)="toggleCompleted(task.id)"
+        >
+        <span>{{ task.title }}</span>
+        <button class="delete-btn" (click)="deleteTask(task.id)">Delete</button>
+      </li>
+    </ul>
+  
+    <ng-template #noTasksMessage>
+      <p>No tasks found. Add a new one!</p>
+    </ng-template>
+  
+  </div>
